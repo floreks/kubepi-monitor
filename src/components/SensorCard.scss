@@ -1,0 +1,82 @@
+@import '../styles/main';
+
+.sensor-card {
+  background: $card-bg-color;
+  border-radius: 2px;
+  box-shadow: $whiteframe-shadow-1dp;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  height: 36 * $baseline-grid;
+  margin: 2 * $baseline-grid;
+  position: relative;
+  width: 40 * $baseline-grid;
+}
+
+.sensor-card-header {
+  font-size: $title-font-size-base;
+  padding: $baseline-grid 0 $baseline-grid $baseline-grid;
+  border-bottom: $border solid 1px;
+}
+
+.sensor-card-content {
+  font-size: $body-font-size-base;
+  padding: $baseline-grid 0 0 $baseline-grid;
+  flex: 2 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sensor-card-image-container {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  font-size: $caption-font-size-base;
+}
+
+.sensor-card-image {
+  width: 12 * $baseline-grid;
+  padding-right: 2 * $baseline-grid;
+}
+
+.sensor-card-image-description {
+  padding-right: 2 * $baseline-grid;
+}
+
+.sensor-card-footer {
+  font-size: $body-font-size-base;
+  padding: $baseline-grid 0 $baseline-grid $baseline-grid;
+  border-top: $border solid 1px;
+  flex: 1 1 auto;
+}
+
+.sensor-card-buttons {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: $baseline-grid;
+
+  button {
+    background-color: $main-bg-color;
+    border: none;
+    height: 4 * $baseline-grid;
+    width: 12 * $baseline-grid;
+    box-shadow: $whiteframe-shadow-1dp;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    &:hover {
+      background-color: $accent-gray;
+    }
+
+    &.primary {
+      background-color: $primary;
+      color: $main-bg-color;
+
+      &:hover {
+        background-color: $accent-blue;
+      }
+    }
+  }
+}

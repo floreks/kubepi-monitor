@@ -1,0 +1,32 @@
+@import '../styles/main';
+
+.navbar {
+  background:
+          radial-gradient(black 15%, transparent 16%) 0 0,
+          radial-gradient(black 15%, transparent 16%) 8px 8px,
+          radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+          radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color: #323232;
+  background-size:16px 16px;
+  box-shadow: $whiteframe-shadow-1dp;
+  color: $header-text;
+  padding: 8px 16px 8px 16px;
+}
+
+.navbar-info {
+  justify-content: flex-start;
+  margin: 0;
+  display: flex;
+}
+
+.navbar-logo {
+  align-self: center;
+  flex: 0 1 auto;
+  padding-right: 8px;
+  width: 64px;
+}
+
+.navbar-text {
+  align-self: center;
+  flex: 0 1 auto;
+}
