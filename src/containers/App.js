@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import {SensorCard} from "../components/SensorCard";
 import * as dht11 from "../actions/dht11";
 import * as ds18b20 from "../actions/ds18b20";
+import * as breathalyzer from "../actions/breathalyzer";
 import {Statuses} from "../reducers/index";
 
 import DHT11 from "./assets/dht11.png";
@@ -24,7 +25,8 @@ class App extends Component {
 
     this.state = {
       dhtIntervalId: 0,
-      ds18b20IntervalId: 0
+      ds18b20IntervalId: 0,
+      breathalyzerOn: false,
     }
   }
 
@@ -42,7 +44,7 @@ class App extends Component {
 
   handleDHT11() {
     if(this.state.dhtIntervalId === 0) {
-      let intervalId = this.runPollInterval(dht11.fetchData, 'http://192.168.0.100:30024/dht11')
+      let intervalId = this.runPollInterval(dht11.fetchData, '/dht11')
       this.setState({
         dhtIntervalId: intervalId,
       })
@@ -57,7 +59,7 @@ class App extends Component {
 
   handleDS18B20() {
     if(this.state.ds18b20IntervalId === 0) {
-      let intervalId = this.runPollInterval(ds18b20.fetchData, 'http://192.168.0.100:30024/ds18b20')
+      let intervalId = this.runPollInterval(ds18b20.fetchData, '/ds18b20')
       this.setState({
         ds18b20IntervalId: intervalId,
       })
@@ -70,8 +72,18 @@ class App extends Component {
     }
   }
 
+  handleBreathalyzer() {
+    if(this.state.breathalyzerOn) {
+      this.props.dispatch(breathalyzer.reset())
+      this.setState({breathalyzerOn: false})
+    } else {
+      this.props.dispatch(breathalyzer.fetchData('/breathalyzer'))
+      this.setState({breathalyzerOn: true})
+    }
+  }
+
   render() {
-    const {dht11State, ds18B20State} = this.props
+    const {dht11State, ds18B20State, breathalyzerState} = this.props
 
     let dht11Status = dht11State.status
     if(dht11State.status === Statuses.polled ||
@@ -91,6 +103,18 @@ class App extends Component {
           <div>
             <div>Temperature: {ds18B20State.payload.temperature}</div>
           </div>
+      )
+    }
+
+    let breathalyzerStatus = breathalyzerState.status
+    if(breathalyzerState.status === Statuses.polled ||
+      (breathalyzerState.status === Statuses.breathalyzerOn && !!breathalyzerState.payload)) {
+      breathalyzerStatus = (
+        <div>
+          <div style={breathalyzerState.payload.alcoholDetected ? {color:'red'} : {color:'green'}}>
+            {breathalyzerState.payload.alcoholDetected ? 'Alcohol detected!' : 'Alcohol not detected'}
+            </div>
+        </div>
       )
     }
 
@@ -116,8 +140,9 @@ class App extends Component {
                         thumbnail={MQ3}
                         description="Breathalyzer based on MQ-3 gas sensor.
                         Only detects alcohol in the air and does not support alcohol concentration measurement."
-                        actionText="Detect alcohol"
-                        status="Off"/>
+                        onAction={this.handleBreathalyzer.bind(this)}
+                        actionText={this.state.breathalyzerOn ? 'Reset' : 'Detect Alcohol'}
+                        status={breathalyzerStatus}/>
           </div>
           <Footer/>
         </div>
@@ -128,13 +153,15 @@ class App extends Component {
 App.propTypes = {
   dht11State: PropTypes.object.isRequired,
   ds18B20State: PropTypes.object.isRequired,
+  breathalyzerState: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
   return {
     dht11State: state.dht11State,
-    ds18B20State: state.ds18B20State
+    ds18B20State: state.ds18B20State,
+    breathalyzerState: state.breathalyzerState
   }
 }
 

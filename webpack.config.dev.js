@@ -34,7 +34,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.html',
       filename: 'index.html',
-      title: 'Simple Redux Boilerplate',
+      title: 'KubePi Monitor',
       inject: 'body'
     }),
     /**
@@ -59,7 +59,7 @@ module.exports = {
         loader: 'style!css!sass'
       },
       {
-        test: /\.(jpg|png)$/,
+        test: /\.(jpg|png|ico)$/,
         loader: 'url-loader',
         options: {
           limit: 25000,
